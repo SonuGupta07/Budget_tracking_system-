@@ -3,25 +3,12 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Environment Check') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Backend Check') {
-            steps {
-                dir('budget-management-backend') {
-                    sh 'ls'
-                }
-            }
-        }
-
-        stage('Frontend Check') {
-            steps {
-                dir('budget-management-frontend') {
-                    sh 'ls'
-                }
+                sh 'node --version || true'
+                sh 'npm --version || true'
+                sh 'python3 --version || true'
+                sh 'pip3 --version || true'
             }
         }
     }
