@@ -43,12 +43,20 @@ pipeline {
         }
 
         stage('Deploy Backend') {
-            steps {
-                sh 'docker stop budgetpro-backend || true'
-                sh 'docker rm budgetpro-backend || true'
-                sh 'docker run -d --env-file /var/jenkins_home/workspace/budgetpro-pipeline/budget-management-backend/.env --name budgetpro-backend -p 8000:8000 budget-backend:latest'
-            }
-        }
+    steps {
+        sh 'docker stop budgetpro-backend || true'
+        sh 'docker rm budgetpro-backend || true'
+
+        sh '''
+        docker run -d \
+          --name budgetpro-backend \
+          --network budget-network \
+          --env-file /var/jenkins_home/workspace/budgetpro-pipeline/budget-management-backend/.env \
+          -p 8000:8000 \
+          budget-backend:latest
+        '''
+    }
+}
 
         stage('Deploy Frontend') {
             steps {
