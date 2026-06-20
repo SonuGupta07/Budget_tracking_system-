@@ -26,37 +26,37 @@ pipeline {
             }
         }
 
-     stage('Build Backend Image') {
-    steps {
-        dir('budget-management-backend') {
-            sh 'docker build -t budget-backend:latest .'
+        stage('Build Backend Image') {
+            steps {
+                dir('budget-management-backend') {
+                    sh 'docker build -t budget-backend:latest .'
+                }
+            }
         }
-    }
-}
 
-stage('Build Frontend Image') {
-    steps {
-        dir('budget-management-frontend') {
-            sh 'docker build -t budget-frontend:latest .'
+        stage('Build Frontend Image') {
+            steps {
+                dir('budget-management-frontend') {
+                    sh 'docker build -t budget-frontend:latest .'
+                }
+            }
         }
-    }
-}
-stage('Deploy Backend') {
-    steps {
-        sh 'docker stop budgetpro-backend || true'
-        sh 'docker rm budgetpro-backend || true'
-        sh 'docker run -d --env-file /var/jenkins_home/workspace/budgetpro-pipeline/budget-management-backend/.env --name budgetpro-backend -p 8000:8000 budget-backend:latest'
-    }
-}
-}
 
-stage('Deploy Frontend') {
-    steps {
-        sh 'docker stop budgetpro-frontend || true'
-        sh 'docker rm budgetpro-frontend || true'
-        sh 'docker run -d --name budgetpro-frontend -p 5173:80 budget-frontend:latest'
-    }
-}
-}
+        stage('Deploy Backend') {
+            steps {
+                sh 'docker stop budgetpro-backend || true'
+                sh 'docker rm budgetpro-backend || true'
+                sh 'docker run -d --env-file /var/jenkins_home/workspace/budgetpro-pipeline/budget-management-backend/.env --name budgetpro-backend -p 8000:8000 budget-backend:latest'
+            }
+        }
+
+        stage('Deploy Frontend') {
+            steps {
+                sh 'docker stop budgetpro-frontend || true'
+                sh 'docker rm budgetpro-frontend || true'
+                sh 'docker run -d --name budgetpro-frontend -p 5173:80 budget-frontend:latest'
+            }
+        }
 
     }
+}
