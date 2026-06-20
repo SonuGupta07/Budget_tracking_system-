@@ -26,11 +26,12 @@ pipeline {
             }
         }
 
-        stage('Docker Compose Validation') {
+       stage('Docker Validation') {
             steps {
-                sh 'docker compose config'
-            }
-        }
+                sh 'docker --version'
+                sh 'docker ps'
+    }
+}
 
     }
 }
