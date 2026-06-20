@@ -5,29 +5,23 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Code checkout successful'
+                checkout scm
             }
         }
 
-        stage('Backend Build') {
+        stage('Backend Check') {
             steps {
-                dir('backend') {
-                    sh 'echo Building Backend'
+                dir('budget-management-backend') {
+                    sh 'ls'
                 }
             }
         }
 
-        stage('Frontend Build') {
+        stage('Frontend Check') {
             steps {
-                dir('frontend') {
-                    sh 'echo Building Frontend'
+                dir('budget-management-frontend') {
+                    sh 'ls'
                 }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'echo Deploying Application'
             }
         }
     }
