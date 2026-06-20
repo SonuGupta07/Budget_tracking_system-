@@ -41,6 +41,21 @@ stage('Build Frontend Image') {
         }
     }
 }
+stage('Deploy Backend') {
+    steps {
+        sh 'docker stop budgetpro-backend || true'
+        sh 'docker rm budgetpro-backend || true'
+        sh 'docker run -d --name budgetpro-backend -p 8000:8000 budget-backend:latest'
+    }
+}
+
+stage('Deploy Frontend') {
+    steps {
+        sh 'docker stop budgetpro-frontend || true'
+        sh 'docker rm budgetpro-frontend || true'
+        sh 'docker run -d --name budgetpro-frontend -p 5173:80 budget-frontend:latest'
+    }
+}
 }
 
     }
