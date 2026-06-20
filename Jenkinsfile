@@ -26,12 +26,21 @@ pipeline {
             }
         }
 
-       stage('Docker Validation') {
-            steps {
-                sh 'docker --version'
-                sh 'docker ps'
+     stage('Build Backend Image') {
+    steps {
+        dir('budget-management-backend') {
+            sh 'docker build -t budget-backend:latest .'
+        }
     }
 }
 
+stage('Build Frontend Image') {
+    steps {
+        dir('budget-management-frontend') {
+            sh 'docker build -t budget-frontend:latest .'
+        }
     }
 }
+}
+
+    }
