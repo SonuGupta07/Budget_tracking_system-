@@ -3,13 +3,34 @@ pipeline {
 
     stages {
 
-        stage('Environment Check') {
+        stage('Checkout') {
             steps {
-                sh 'node --version || true'
-                sh 'npm --version || true'
-                sh 'python3 --version || true'
-                sh 'pip3 --version || true'
+                checkout scm
             }
         }
+
+        stage('Frontend Build') {
+            steps {
+                dir('budget-management-frontend') {
+                    sh 'npm install'
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Backend Dependency Check') {
+            steps {
+                dir('budget-management-backend') {
+                    sh 'pip3 install --break-system-packages -r requirements.txt'
+                }
+            }
+        }
+
+        stage('Docker Compose Validation') {
+            steps {
+                sh 'docker compose config'
+            }
+        }
+
     }
 }
