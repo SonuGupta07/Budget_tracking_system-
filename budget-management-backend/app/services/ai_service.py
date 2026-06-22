@@ -1,4 +1,4 @@
-import google.generativeai as genai
+
 
 from app.core.config import settings
 
@@ -10,10 +10,16 @@ from app.repositories.analytics_repository import (
     AnalyticsRepository
 )
 
-genai.configure(
+
+
+
+
+
+from google import genai
+
+client = genai.Client(
     api_key=settings.GEMINI_API_KEY
 )
-
 
 class AIService:
 
@@ -24,9 +30,7 @@ class AIService:
         description
     ):
 
-        model = genai.GenerativeModel(
-            "gemini-2.5-flash"
-        )
+      
 
         prompt = f"""
         Categorize this expense into ONE category only.
@@ -48,9 +52,10 @@ class AIService:
         Return only category name.
         """
 
-        response = model.generate_content(
-            prompt
-        )
+        response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
+)
 
         category = response.text.strip()
 
@@ -83,9 +88,7 @@ class AIService:
             )
         )
 
-        model = genai.GenerativeModel(
-            "gemini-2.5-flash"
-        )
+      
 
         prompt = f"""
         You are an expert financial advisor.
@@ -111,9 +114,10 @@ class AIService:
         5. Short bullet points
         """
 
-        response = model.generate_content(
-            prompt
-        )
+        response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
+)
 
         recommendation = (
             response.text.strip()
@@ -180,9 +184,7 @@ class AIService:
                 2
             )
 
-        model = genai.GenerativeModel(
-            "gemini-2.5-flash"
-        )
+       
 
         prompt = f"""
         Analyze this financial data.
@@ -211,9 +213,10 @@ class AIService:
         5. No headings
         """
 
-        response = model.generate_content(
-            prompt
-        )
+        response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
+)
 
         insights = (
             response.text.strip()
@@ -271,9 +274,7 @@ class AIService:
                 "No savings goal found"
             }
 
-        model = genai.GenerativeModel(
-            "gemini-2.5-flash"
-        )
+        
 
         prompt = f"""
         You are a savings coach.
@@ -299,9 +300,10 @@ class AIService:
         5. Short recommendations
         """
 
-        response = model.generate_content(
-            prompt
-        )
+        response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
+)
 
         recommendation = (
             response.text.strip()
@@ -342,9 +344,7 @@ class AIService:
         )
     )
 
-     model = genai.GenerativeModel(
-        "gemini-2.5-flash"
-    )
+     
 
      prompt = f"""
     You are an AI Financial Assistant.
@@ -375,9 +375,10 @@ class AIService:
     5. Answer only the question
     """
 
-     response = model.generate_content(
-        prompt
-    )
+     response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents=prompt
+)
 
      answer = response.text.strip()
 
